@@ -5,8 +5,6 @@ import webservice.application.WebserviceApp;
 
 /**
  * The main class, the entry point of the Server application
- * 
- * @author Razvan Nedelcu
  */
 public class MainClass {
 	public static void main(String[] args) {
