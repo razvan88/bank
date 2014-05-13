@@ -34,24 +34,15 @@ public class DBOperations {
 
 				int userId = result.getInt("id");
 				int domeniuId = result.getInt("domeniu");
-				int experientaId = result.getInt("experienta");
 
 				info.put("id", userId);
 				info.put("domeniuId", domeniuId);
-				info.put("experientaId", experientaId);
 
 				query = "SELECT `nume` FROM " + Credentials.TABEL_DOMENII
 						+ " WHERE `id`=" + domeniuId;
 				ResultSet resultDom = statement.executeQuery(query);
 				if (resultDom.next()) {
 					info.put("domeniuNume", resultDom.getString("nume"));
-				}
-
-				query = "SELECT `nume` FROM " + Credentials.TABEL_EXPERIENTA
-						+ " WHERE `id`=" + experientaId;
-				ResultSet resultExp = statement.executeQuery(query);
-				if (resultExp.next()) {
-					info.put("experientaNume", resultExp.getString("nume"));
 				}
 
 				query = "SELECT * FROM " + Credentials.TABEL_SOLDURI
@@ -100,7 +91,7 @@ public class DBOperations {
 	}
 
 	/**
-	 * domeniu si experienta trebuie ca int (foreign key)
+	 * domeniu trebuie ca int (foreign key)
 	 * 
 	 * @param info
 	 */
@@ -118,7 +109,6 @@ public class DBOperations {
 			query += "'" + info.getString("prenume") + "', ";
 			query += "'" + info.getString("cnp") + "', ";
 			query += info.getInt("domeniu") + ", ";
-			query += info.getInt("experienta") + ", ";
 			query += info.getInt("rauPlatnic");
 
 			statement.executeUpdate(query);
@@ -181,7 +171,7 @@ public class DBOperations {
 		}
 	}
 
-	public static int getDomainCoeff(int userId) {
+	public static int getDomainCoeffByUserId(int userId) {
 		try {
 			Connection connection = sConnection.getConnection();
 			Statement statement = connection
@@ -197,8 +187,8 @@ public class DBOperations {
 				query = "SELECT `coeficient` FROM " + Credentials.TABEL_DOMENII
 						+ " WHERE `id`=" + domeniuId;
 				ResultSet resultCoeff = statement.executeQuery(query);
-				
-				if(resultCoeff.next()) {
+
+				if (resultCoeff.next()) {
 					return resultCoeff.getInt("coeficient");
 				}
 			}
@@ -209,26 +199,41 @@ public class DBOperations {
 		return 0;
 	}
 
-	public static int getExperienceCoeff(int userId) {
+	public static int getDomainCoeffByDomainId(int domeniuId) {
 		try {
 			Connection connection = sConnection.getConnection();
 			Statement statement = connection
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_READ_ONLY);
 
-			String query = "SELECT `experienta` FROM " + Credentials.TABEL_CLIENTI
-					+ " WHERE `id`=" + userId;
-			ResultSet result = statement.executeQuery(query);
-			if (result.next()) {
-				int experientaId = result.getInt("experienta");
+			String query = "SELECT `coeficient` FROM "
+					+ Credentials.TABEL_DOMENII + " WHERE `id`=" + domeniuId;
+			ResultSet resultCoeff = statement.executeQuery(query);
 
-				query = "SELECT `coeficient` FROM " + Credentials.TABEL_EXPERIENTA
-						+ " WHERE `id`=" + experientaId;
-				ResultSet resultCoeff = statement.executeQuery(query);
-				
-				if(resultCoeff.next()) {
-					return resultCoeff.getInt("coeficient");
-				}
+			if (resultCoeff.next()) {
+				return resultCoeff.getInt("coeficient");
+			}
+		} catch (Exception e) {
+
+		}
+
+		return 0;
+	}
+
+	public static int getExperienceCoeff(int experientaId) {
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+
+			String query = "SELECT `coeficient` FROM "
+					+ Credentials.TABEL_EXPERIENTA + " WHERE `id`="
+					+ experientaId;
+			ResultSet resultCoeff = statement.executeQuery(query);
+
+			if (resultCoeff.next()) {
+				return resultCoeff.getInt("coeficient");
 			}
 		} catch (Exception e) {
 
