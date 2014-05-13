@@ -51,6 +51,7 @@ public class DBOperations {
 				if (resultSold.next()) {
 					info.put("iban", resultSold.getString("iban"));
 					info.put("sold", resultSold.getFloat("sold"));
+					info.put("blocat", resultSold.getInt("blocat"));
 					int moneda = resultSold.getInt("moneda");
 
 					query = "SELECT `nume` FROM " + Credentials.TABEL_MONEDE
@@ -135,8 +136,22 @@ public class DBOperations {
 		} catch (Exception e) {
 
 		}
+	}
 
-		return;
+	public static void changeAccountLockStatus(int userId, int lock) {
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+
+			String query = "UPDATE " + Credentials.TABEL_SOLDURI
+					+ " SET `blocat`=" + lock + " WHERE `client`=" + userId;
+
+			statement.executeUpdate(query);
+		} catch (Exception e) {
+
+		}
 	}
 
 	public static void updateAccount(int userId, float amount,
