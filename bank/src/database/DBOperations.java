@@ -3,6 +3,7 @@ package database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Random;
 
 import net.sf.json.JSONObject;
 
@@ -98,6 +99,7 @@ public class DBOperations {
 	 */
 	public static void addUser(JSONObject info) {
 		try {
+			// Add user
 			Connection connection = sConnection.getConnection();
 			Statement statement = connection
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
@@ -113,6 +115,29 @@ public class DBOperations {
 			query += info.getInt("rauPlatnic");
 
 			statement.executeUpdate(query);
+
+			// get user id
+			query = "SELECT `id` FROM " + Credentials.TABEL_CLIENTI
+					+ " WHERE `cnp`='" + info.getString("cnp") + "'";
+			ResultSet result = statement.executeQuery(query);
+			if (result.next()) {
+				int userId = result.getInt("id");
+
+				// create an account for the user
+				query = "INSERT INTO "
+						+ Credentials.TABEL_SOLDURI
+						+ " (`client`, `iban`, `moneda`, `sold`, `blocat`) VALUES (";
+				query += userId + ", ";
+
+				// RO98RNCB0077092789180001
+				Random rand = new Random();
+				query += "'RO" + (10 + rand.nextInt(90))
+						+ "RNCB" + (1000000000000000l + rand.nextInt(2147483647) * 1000000) + "', ";
+				query += "1, 0, 0";
+
+				statement.executeUpdate(query);
+			}
+
 		} catch (Exception e) {
 
 		}
