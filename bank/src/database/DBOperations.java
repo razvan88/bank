@@ -13,8 +13,13 @@ public class DBOperations {
 
 	static {
 		sConnection = new DBConnection();
+		sConnection.openConnection();
 	}
 
+	public static void closeConnection () {
+		sConnection.closeConnection();
+	}
+	
 	public static JSONObject getUserByCnp(String cnp) {
 		JSONObject info = new JSONObject();
 
