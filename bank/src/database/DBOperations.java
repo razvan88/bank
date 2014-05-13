@@ -118,7 +118,24 @@ public class DBOperations {
 	}
 
 	public static void updateUserInfo(JSONObject info) {
-		// TODO
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+
+			String query = "UPDATE " + Credentials.TABEL_CLIENTI + " SET ";
+			query += "`nume`='" + info.getString("nume") + "', ";
+			query += "`prenume`='" + info.getString("prenume") + "', ";
+			query += "`cnp`='" + info.getString("cnp") + "', ";
+			query += "`domeniu`=" + info.getString("domeniu");
+			query += " WHERE `id`=" + info.getInt("id");
+
+			statement.executeUpdate(query);
+		} catch (Exception e) {
+
+		}
+
 		return;
 	}
 
