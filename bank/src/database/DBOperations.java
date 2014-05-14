@@ -138,7 +138,7 @@ public class DBOperations {
 				Random rand = new Random();
 				query += "'RO" + (10 + rand.nextInt(90))
 						+ "RNCB" + (1000000000000000l + rand.nextInt(2147483647) * 1000000) + "', ";
-				query += "1, 0, 0";
+				query += "1, 0, 0"; // moneda, sold, blocat
 
 				statement.executeUpdate(query);
 			}
