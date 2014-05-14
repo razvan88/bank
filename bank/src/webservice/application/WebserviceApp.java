@@ -5,8 +5,6 @@ import org.restlet.data.Protocol;
 
 /**
  * This class starts and stops the webservice
- * 
- * @author Razvan Nedelcu
  */
 public class WebserviceApp {
 	private static Component component;

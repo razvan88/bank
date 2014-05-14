@@ -117,7 +117,7 @@ public class DBOperations {
 			query += "'" + info.getString("prenume") + "', ";
 			query += "'" + info.getString("cnp") + "', ";
 			query += info.getInt("domeniu") + ", ";
-			query += info.getInt("rauPlatnic");
+			query += "0"; //rauPlatnic
 
 			statement.executeUpdate(query);
 
