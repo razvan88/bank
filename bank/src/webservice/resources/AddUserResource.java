@@ -12,12 +12,13 @@ import database.DBOperations;
 public class AddUserResource extends ServerResource {
 
 	@Post
-	public void addUser(Representation entity) {
+	public String addUser(Representation entity) {
 		Form request = new Form(this.getRequestEntity());
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
-		
 		DBOperations.addUser(info);
+		
+		return new JSONObject().toString();
 	}
 }
 

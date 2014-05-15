@@ -12,7 +12,7 @@ import database.DBOperations;
 public class UpdateUserAccountResource extends ServerResource {
 
 	@Post
-	public void updateAccount(Representation entity) {
+	public String updateAccount(Representation entity) {
 		Form request = new Form(this.getRequestEntity());
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
@@ -21,6 +21,8 @@ public class UpdateUserAccountResource extends ServerResource {
 		boolean isWithdrawal = info.getInt("isWithdrawal") == 1;
 		
 		DBOperations.updateAccount(userId, amount, isWithdrawal);
+		
+		return new JSONObject().toString();
 	}
 }
 

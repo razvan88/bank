@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Random;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class DBOperations {
@@ -16,10 +17,10 @@ public class DBOperations {
 		sConnection.openConnection();
 	}
 
-	public static void closeConnection () {
+	public static void closeConnection() {
 		sConnection.closeConnection();
 	}
-	
+
 	public static JSONObject getUserByCnp(String cnp) {
 		JSONObject info = new JSONObject();
 
@@ -117,7 +118,7 @@ public class DBOperations {
 			query += "'" + info.getString("prenume") + "', ";
 			query += "'" + info.getString("cnp") + "', ";
 			query += info.getInt("domeniu") + ", ";
-			query += "0"; //rauPlatnic
+			query += "0"; // rauPlatnic
 
 			statement.executeUpdate(query);
 
@@ -136,8 +137,11 @@ public class DBOperations {
 
 				// RO98RNCB0077092789180001
 				Random rand = new Random();
-				query += "'RO" + (10 + rand.nextInt(90))
-						+ "RNCB" + (1000000000000000l + rand.nextInt(2147483647) * 1000000) + "', ";
+				query += "'RO"
+						+ (10 + rand.nextInt(90))
+						+ "RNCB"
+						+ (1000000000000000l + rand.nextInt(2147483647) * 1000000)
+						+ "', ";
 				query += "1, 0, 0"; // moneda, sold, blocat
 
 				statement.executeUpdate(query);
@@ -325,5 +329,57 @@ public class DBOperations {
 		}
 
 		return "";
+	}
+
+	public static JSONArray getDomanins() {
+		JSONArray domains = new JSONArray();
+		
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+
+			String query = "SELECT * FROM " + Credentials.TABEL_DOMENII;
+
+			ResultSet result = statement.executeQuery(query);
+
+			while (result.next()) {
+				JSONObject domain = new JSONObject();
+				domain.put("id", result.getInt("id"));
+				domain.put("nume", result.getString("nume"));
+				domains.add(domain);
+			}
+		} catch (Exception e) {
+
+		}
+
+		return domains;
+	}
+
+	public static JSONArray getExperience() {
+		JSONArray experiences = new JSONArray();
+		
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+
+			String query = "SELECT * FROM " + Credentials.TABEL_EXPERIENTA;
+
+			ResultSet result = statement.executeQuery(query);
+
+			while (result.next()) {
+				JSONObject experience = new JSONObject();
+				experience.put("id", result.getInt("id"));
+				experience.put("nume", result.getString("nume"));
+				experiences.add(experience);
+			}
+		} catch (Exception e) {
+
+		}
+
+		return experiences;
 	}
 }

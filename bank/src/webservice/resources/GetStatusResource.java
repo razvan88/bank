@@ -14,8 +14,19 @@ public class GetStatusResource extends ServerResource {
 		Form request = new Form(this.getRequestEntity());
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
+		
 		// TODO - call the algorithm and return a json {code:1, status:Aprobat}
 		
-		return "";
+		return new JSONObject().toString();
 	}
 }
+
+/* 
+
+{
+	info: {
+				...
+		}
+}
+
+*/

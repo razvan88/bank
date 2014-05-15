@@ -12,12 +12,13 @@ import database.DBOperations;
 public class UpdateUserInfoResource extends ServerResource {
 
 	@Post
-	public void updateUser(Representation entity) {
+	public String updateUser(Representation entity) {
 		Form request = new Form(this.getRequestEntity());
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
-		
 		DBOperations.updateUserInfo(info);
+		
+		return new JSONObject().toString();
 	}
 }
 

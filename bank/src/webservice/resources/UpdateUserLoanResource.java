@@ -12,7 +12,7 @@ import database.DBOperations;
 public class UpdateUserLoanResource extends ServerResource {
 
 	@Post
-	public void updateLoan(Representation entity) {
+	public String updateLoan(Representation entity) {
 		Form request = new Form(this.getRequestEntity());
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
@@ -20,6 +20,8 @@ public class UpdateUserLoanResource extends ServerResource {
 		String loan = info.getString("loan");
 		
 		DBOperations.updateLoan(userId, loan);
+		
+		return new JSONObject().toString();
 	}
 }
 

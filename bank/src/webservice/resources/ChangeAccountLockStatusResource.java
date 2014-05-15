@@ -12,7 +12,7 @@ import database.DBOperations;
 public class ChangeAccountLockStatusResource extends ServerResource {
 
 	@Post
-	public void changeAccountStatus(Representation entity) {
+	public String changeAccountStatus(Representation entity) {
 		Form request = new Form(this.getRequestEntity());
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
@@ -20,6 +20,8 @@ public class ChangeAccountLockStatusResource extends ServerResource {
 		int lock = info.getInt("lock");
 		
 		DBOperations.changeAccountLockStatus(userId, lock);
+		
+		return new JSONObject().toString();
 	}
 }
 
