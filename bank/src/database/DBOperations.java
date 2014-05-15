@@ -345,7 +345,8 @@ public class DBOperations {
 			while (result.next()) {
 				JSONObject experience = new JSONObject();
 				experience.put("id", result.getInt("id"));
-				experience.put("nume", result.getString("nume"));
+				experience.put("vechimeAniMin", result.getString("vechimeAniMin"));
+				experience.put("vechimeAniMax", result.getString("vechimeAniMax"));
 				experiences.add(experience);
 			}
 		} catch (Exception e) {
