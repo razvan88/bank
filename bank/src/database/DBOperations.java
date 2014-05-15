@@ -237,35 +237,7 @@ public class DBOperations {
 		}
 	}
 
-	public static int getDomainCoeffByUserId(int userId) {
-		try {
-			Connection connection = sConnection.getConnection();
-			Statement statement = connection
-					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-							ResultSet.CONCUR_READ_ONLY);
-
-			String query = "SELECT `domeniu` FROM " + Credentials.TABEL_CLIENTI
-					+ " WHERE `id`=" + userId;
-			ResultSet result = statement.executeQuery(query);
-			if (result.next()) {
-				int domeniuId = result.getInt("domeniu");
-
-				query = "SELECT `coeficient` FROM " + Credentials.TABEL_DOMENII
-						+ " WHERE `id`=" + domeniuId;
-				ResultSet resultCoeff = statement.executeQuery(query);
-
-				if (resultCoeff.next()) {
-					return resultCoeff.getInt("coeficient");
-				}
-			}
-		} catch (Exception e) {
-
-		}
-
-		return 0;
-	}
-
-	public static int getDomainCoeffByDomainId(int domeniuId) {
+	public static int getDomainCoeffById(int domeniuId) {
 		try {
 			Connection connection = sConnection.getConnection();
 			Statement statement = connection
@@ -286,7 +258,7 @@ public class DBOperations {
 		return 0;
 	}
 
-	public static int getExperienceCoeff(int experientaId) {
+	public static int getExperienceCoeffById(int experientaId) {
 		try {
 			Connection connection = sConnection.getConnection();
 			Statement statement = connection
