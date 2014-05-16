@@ -10,6 +10,7 @@ import webservice.resources.GetDomainsResource;
 import webservice.resources.GetExperienceResource;
 import webservice.resources.GetStatusResource;
 import webservice.resources.GetUserInfoResource;
+import webservice.resources.GetUserLoanResource;
 import webservice.resources.UpdateUserInfoResource;
 import webservice.resources.UpdateUserAccountResource;
 import webservice.resources.UpdateUserLoanResource;
@@ -28,6 +29,7 @@ public class WebserviceDispatcher extends Application {
 		router.attach("/getUserInfo", GetUserInfoResource.class);
 		router.attach("/addUser", AddUserResource.class);
 		router.attach("/updateUserInfo", UpdateUserInfoResource.class);
+		router.attach("/getUserLoan", GetUserLoanResource.class);
 		router.attach("/updateUserLoan", UpdateUserLoanResource.class);
 		router.attach("/updateUserAccount", UpdateUserAccountResource.class);
 		router.attach("/setAccountLock", ChangeAccountLockStatusResource.class);

@@ -113,12 +113,12 @@ public class DBOperations {
 
 			String query = "INSERT INTO "
 					+ Credentials.TABEL_CLIENTI
-					+ " (`nume`, `prenume`, `cnp`, `domeniu`, `experienta`, `rauPlatnic`) VALUES (";
+					+ " (`nume`, `prenume`, `cnp`, `domeniu`, `rauPlatnic`) VALUES (";
 			query += "'" + info.getString("nume") + "', ";
 			query += "'" + info.getString("prenume") + "', ";
 			query += "'" + info.getString("cnp") + "', ";
 			query += info.getInt("domeniu") + ", ";
-			query += "0"; // rauPlatnic
+			query += "0)"; // rauPlatnic
 
 			statement.executeUpdate(query);
 
@@ -142,7 +142,7 @@ public class DBOperations {
 						+ "RNCB"
 						+ (1000000000000000l + rand.nextInt(2147483647) * 1000000)
 						+ "', ";
-				query += "1, 0, 0"; // moneda, sold, blocat
+				query += "1, 0, 0)"; // moneda, sold, blocat
 
 				statement.executeUpdate(query);
 			}
