@@ -6,6 +6,7 @@ import org.restlet.routing.Router;
 
 import webservice.resources.AddUserResource;
 import webservice.resources.ChangeAccountLockStatusResource;
+import webservice.resources.GetAccountLockStatusResource;
 import webservice.resources.GetDomainsResource;
 import webservice.resources.GetExperienceResource;
 import webservice.resources.GetStatusResource;
@@ -33,6 +34,7 @@ public class WebserviceDispatcher extends Application {
 		router.attach("/updateUserLoan", UpdateUserLoanResource.class);
 		router.attach("/updateUserAccount", UpdateUserAccountResource.class);
 		router.attach("/setAccountLock", ChangeAccountLockStatusResource.class);
+		router.attach("/getAccountLock", GetAccountLockStatusResource.class);
 		router.attach("/getDomains", GetDomainsResource.class);
 		router.attach("/getExperience", GetExperienceResource.class);
 		router.attach("/getStatus", GetStatusResource.class);

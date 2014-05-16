@@ -37,7 +37,6 @@ public class DBOperations {
 				info.put("nume", result.getString("nume"));
 				info.put("prenume", result.getString("prenume"));
 				info.put("cnp", result.getString("cnp"));
-				info.put("rauPlatnic", result.getInt("rauPlatnic"));
 
 				int userId = result.getInt("id");
 				int domeniuId = result.getInt("domeniu");
@@ -113,12 +112,11 @@ public class DBOperations {
 
 			String query = "INSERT INTO "
 					+ Credentials.TABEL_CLIENTI
-					+ " (`nume`, `prenume`, `cnp`, `domeniu`, `rauPlatnic`) VALUES (";
+					+ " (`nume`, `prenume`, `cnp`, `domeniu`) VALUES (";
 			query += "'" + info.getString("nume") + "', ";
 			query += "'" + info.getString("prenume") + "', ";
 			query += "'" + info.getString("cnp") + "', ";
-			query += info.getInt("domeniu") + ", ";
-			query += "0)"; // rauPlatnic
+			query += info.getInt("domeniu") + ")";
 
 			statement.executeUpdate(query);
 
@@ -235,6 +233,30 @@ public class DBOperations {
 		} catch (Exception e) {
 
 		}
+	}
+	
+	public static String getUserAccountLockStatus(int userId) {
+		JSONObject acc = new JSONObject();
+		
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+
+			String query = "SELECT `blocat` FROM" + Credentials.TABEL_SOLDURI
+					+ " WHERE `client`=" + userId;
+
+			ResultSet result = statement.executeQuery(query);
+			
+			if(result.next()) {
+				acc.put("blocat", result.getInt("blocat"));
+			}
+		} catch (Exception e) {
+
+		}
+		
+		return acc.toString();
 	}
 
 	public static int getDomainCoeffById(int domeniuId) {

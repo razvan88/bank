@@ -9,15 +9,15 @@ import org.restlet.resource.ServerResource;
 
 import database.DBOperations;
 
-public class GetUserLoanResource extends ServerResource {
+public class GetAccountLockStatusResource extends ServerResource {
 
 	@Post
-	public String getUserLoan(Representation entity) {
+	public String getAccountLockStatus(Representation entity) {
 		Form request = new Form(this.getRequestEntity());
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
 		int userId = info.getInt("userId");
 		
-		return DBOperations.getLoan(userId);
+		return DBOperations.getUserAccountLockStatus(userId);
 	}
 }
