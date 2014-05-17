@@ -244,7 +244,7 @@ public class DBOperations {
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_READ_ONLY);
 
-			String query = "SELECT `blocat` FROM" + Credentials.TABEL_SOLDURI
+			String query = "SELECT `blocat` FROM " + Credentials.TABEL_SOLDURI
 					+ " WHERE `client`=" + userId;
 
 			ResultSet result = statement.executeQuery(query);
