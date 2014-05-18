@@ -77,6 +77,53 @@ public class DBOperations {
 		return info;
 	}
 
+	public static int getUserDomain(int userId) {
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+			String query = "SELECT `domeniu` FROM " + Credentials.TABEL_CLIENTI
+					+ " WHERE `id`=" + userId;
+			ResultSet result = statement.executeQuery(query);
+
+			if (result.next()) {
+				return result.getInt("domeniu");
+			}
+		} catch (Exception e) {
+
+		}
+
+		return -1;
+	}
+	
+	public static int getExpId(int ani) {
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+			String query = "SELECT `*` FROM " + Credentials.TABEL_EXPERIENTA;
+			ResultSet result = statement.executeQuery(query);
+
+			while (result.next()) {
+				int min = result.getInt("vechimeAniMin");
+				int max = result.getInt("vechimeAniMax");
+				if(max == 0) { //max is null
+					max = 999;
+				}
+				
+				if(ani >= min && ani < max) {
+					return result.getInt("id");
+				}
+			}
+		} catch (Exception e) {
+
+		}
+
+		return -1;
+	}
+	
 	public static String getLoan(int userId) {
 		try {
 			Connection connection = sConnection.getConnection();

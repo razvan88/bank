@@ -24,9 +24,9 @@ public class Algorithm {
 		setMonthlyOutcome(alteCredite, sumaAlteRate);
 		
 		float venitLC = (float)info.getDouble("venitLC");
-		float venitLC_1 = (float)info.getDouble("venitLC_1");
-		float venitLC_2 = (float)info.getDouble("venitLC_2");
-		float bonus3M = (float)info.getDouble("bonus3M");
+		float venitLC_1 = (float)info.getDouble("venitLC1");
+		float venitLC_2 = (float)info.getDouble("venitLC2");
+		float bonus3M = (float)info.getDouble("bonus3L");
 		float venitAnAnterior = (float)info.getDouble("venitAnAnterior");
 		
 		setMonthlyIncome(venitLC, venitLC_1, venitLC_2, bonus3M);
@@ -35,7 +35,7 @@ public class Algorithm {
 		mExperienceId = info.getInt("expId");
 		mDomainId = info.getInt("domId");
 		
-		float sumaCreditata = (float)info.getDouble("sumaCreditata");
+		float sumaCreditata = (float)info.getDouble("sumaCredit");
 		int nrRate = info.getInt("nrRate");
 		float dae = (float)info.getDouble("dae");
 		

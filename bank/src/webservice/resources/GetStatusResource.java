@@ -18,6 +18,12 @@ public class GetStatusResource extends ServerResource {
 
 		JSONObject info = JSONObject.fromObject(request.getValues("info"));
 		
+		int userId = info.getInt("userId");
+		int ani = info.getInt("ani");
+		
+		info.put("domId", DBOperations.getUserDomain(userId));
+		info.put("expId", DBOperations.getExpId(ani));
+		
 		Algorithm alg = new Algorithm(info);
 		int code = alg.computeStatus();
 		String status = DBOperations.getStatus(code);
