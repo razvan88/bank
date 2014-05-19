@@ -10,6 +10,7 @@ import net.sf.json.JSONObject;
 public class Algorithm {
 	
 	private final int MAXIMUM_OUTCOME_PERCENTAGE = 50;
+	private final int MAXIMUM_SURE_OUTCOME_PERCENTAGE = 25;
 	
 	private float mMonthlyIncome;
 	private float mMonthlyOutcome;
@@ -104,12 +105,16 @@ public class Algorithm {
 		
 		int incomeCoeff = getIncomeWeight(mMonthlyIncome); // (0, 100]
 		
-		int coeff = (int) ((backgroundCoeff * 0.25) + (incomeCoeff * 0.75)); // (0, 100]
-		if(mHadOtherLoans) coeff += 5;
-		if(mHasDelayedPays) coeff -= 10;
+		int coeff = (int) ((backgroundCoeff * 0.20) + (incomeCoeff * 0.55)); // (0, 75]
+		if(mHadOtherLoans) coeff += 5; // (0, 80]
+		if(mHasDelayedPays) coeff -= 10; // (0, 80]
 		
-		if(coeff <= 35) return 0;
-		return coeff < 66 ? 1 : 2;
+		if((mMonthlyIncome - mMonthlyOutcome) * MAXIMUM_SURE_OUTCOME_PERCENTAGE / 100 >= mMonthlyLoan) {
+			coeff += 20; // (0, 100]
+		}
+		
+		if(coeff <= 25) return 0;
+		return coeff < 55 ? 1 : 2;
 	}
 	
 	private int getIncomeWeight(float number) {

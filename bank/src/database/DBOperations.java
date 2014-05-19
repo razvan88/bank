@@ -357,8 +357,7 @@ public class DBOperations {
 							ResultSet.CONCUR_READ_ONLY);
 
 			String query = "SELECT `status_code` FROM "
-					+ Credentials.TABEL_RATING + " WHERE `intervalMin`<="
-					+ rating + " AND `intervalMax`>=" + rating;
+					+ Credentials.TABEL_RATING + " WHERE `status_id`=" + rating;
 
 			ResultSet result = statement.executeQuery(query);
 

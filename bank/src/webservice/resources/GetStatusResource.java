@@ -29,6 +29,7 @@ public class GetStatusResource extends ServerResource {
 		String status = DBOperations.getStatus(code);
 		
 		JSONObject statusObj = new JSONObject();
+		statusObj.put("id", code);
 		statusObj.put("status", status);
 		
 		return statusObj.toString();
