@@ -25,7 +25,7 @@ public class GetNewLoanResource extends ServerResource {
 		JSONObject newLoan = Algorithm.createLoanRates(credit,dae, nrRate);
 		String loan = newLoan.toString();
 		
-		DBOperations.updateLoan(userId, loan);
+		DBOperations.createNewLoan(userId, loan);
 		
 		return loan;
 	}

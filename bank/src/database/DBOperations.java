@@ -265,6 +265,22 @@ public class DBOperations {
 
 		}
 	}
+	
+	public static void createNewLoan(int userId, String loan) {
+		try {
+			Connection connection = sConnection.getConnection();
+			Statement statement = connection
+					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+
+			String query = "INSERT INTO " + Credentials.TABEL_RATE
+					+ " (`client`, `scadentar`) VALUES (" + userId + ",'" + loan + "')";
+
+			statement.executeUpdate(query);
+		} catch (Exception e) {
+
+		}
+	}
 
 	public static void updateLoan(int userId, String loan) {
 		try {
