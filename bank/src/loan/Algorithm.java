@@ -1,6 +1,10 @@
 package loan;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import database.DBOperations;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class Algorithm {
@@ -111,5 +115,49 @@ public class Algorithm {
 		}
 		
 		return length * 15 + firstDigit;
+	}
+	
+	public static JSONObject createLoanRates(float credit, float dae, int nrRate, String loanDate) {
+		float extraPay = credit * dae;
+		float total = credit + extraPay;
+		float monthlyMediumExtraPay = extraPay / nrRate;
+		float monthlyMediumCreditPay = credit / nrRate;
+		float monthlyDifference = (float) (total / Math.pow(10, 4));
+		float monthlyMinExtraPay = (float) (total / Math.pow(10, 3));
+		float monthlyMaxExtraPay = monthlyDifference * nrRate + monthlyMinExtraPay;
+		float monthlyMinCreditPay = monthlyMediumCreditPay + monthlyMediumExtraPay - monthlyMaxExtraPay;
+		float monthlyRate = monthlyMediumCreditPay + monthlyMediumExtraPay;
+		
+		JSONObject loanReturnPlan = new JSONObject();
+		
+		loanReturnPlan.put("sumaCredit", credit);
+		loanReturnPlan.put("dae", dae);
+		loanReturnPlan.put("nrRate", nrRate);
+		loanReturnPlan.put("dataAcord", loanDate);
+		
+		Calendar cal = new GregorianCalendar();
+		cal.add(Calendar.MONTH, 1);
+		
+		JSONArray rates = new JSONArray();
+		for(int i = 0; i < nrRate; i++) {
+			JSONObject rata = new JSONObject();
+			rata.put("nr", i + 1);
+			
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH) + 1;
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			cal.set(Calendar.MONTH, 1);
+			
+			rata.put("scadenta", String.format("%s-%s-%s", year, month, day));
+			rata.put("dobanda", monthlyMaxExtraPay - (i * monthlyDifference));
+			rata.put("rambursat", monthlyMinCreditPay + (i * monthlyDifference));
+			rata.put("total", monthlyRate);
+			rata.put("achitat", 0);
+			rata.put("dataAchitare", "");
+			rates.add(rata);
+		}
+		loanReturnPlan.put("rate", rates);
+		
+		return loanReturnPlan;
 	}
 }
