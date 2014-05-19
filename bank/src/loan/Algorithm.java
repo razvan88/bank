@@ -18,12 +18,19 @@ public class Algorithm {
 	private int mDomainId;
 	private int mExperienceId;
 	
+	private boolean mHasDelayedPays;
+	private boolean mHadOtherLoans;
+	
 	private boolean isIncomeRaising;
 	
 	
 	public Algorithm(JSONObject info) {
 		boolean alteCredite = info.getInt("alteCredite") == 1;
-		float sumaAlteRate = (float)info.getDouble("sumaAlteRate");
+		float sumaAlteRate = 0;
+		
+		if(alteCredite) {
+			sumaAlteRate = (float)info.getDouble("sumaAlteRate");
+		}
 		
 		setMonthlyOutcome(alteCredite, sumaAlteRate);
 		
@@ -38,6 +45,9 @@ public class Algorithm {
 		
 		mExperienceId = info.getInt("expId");
 		mDomainId = info.getInt("domId");
+		
+		mHadOtherLoans = info.getInt("crediteAnterioare") == 1;
+		mHasDelayedPays = info.getInt("intarzieri") == 1;
 		
 		float sumaCreditata = (float)info.getDouble("sumaCredit");
 		int nrRate = info.getInt("nrRate");
@@ -95,6 +105,8 @@ public class Algorithm {
 		int incomeCoeff = getIncomeWeight(mMonthlyIncome); // (0, 100]
 		
 		int coeff = (int) ((backgroundCoeff * 0.25) + (incomeCoeff * 0.75)); // (0, 100]
+		if(mHadOtherLoans) coeff += 5;
+		if(mHasDelayedPays) coeff -= 10;
 		
 		if(coeff <= 35) return 0;
 		return coeff < 66 ? 1 : 2;
@@ -117,8 +129,8 @@ public class Algorithm {
 		return length * 15 + firstDigit;
 	}
 	
-	public static JSONObject createLoanRates(float credit, float dae, int nrRate, String loanDate) {
-		float extraPay = credit * dae;
+	public static JSONObject createLoanRates(float credit, float dae, int nrRate) {
+		float extraPay = credit * dae / 100;
 		float total = credit + extraPay;
 		float monthlyMediumExtraPay = extraPay / nrRate;
 		float monthlyMediumCreditPay = credit / nrRate;
@@ -133,20 +145,28 @@ public class Algorithm {
 		loanReturnPlan.put("sumaCredit", credit);
 		loanReturnPlan.put("dae", dae);
 		loanReturnPlan.put("nrRate", nrRate);
-		loanReturnPlan.put("dataAcord", loanDate);
 		
 		Calendar cal = new GregorianCalendar();
+		String year = cal.get(Calendar.YEAR) + "";
+		int rawMonth = cal.get(Calendar.MONTH) + 1;
+		String month = (rawMonth < 10 ? "0" : "") + rawMonth;
+		int rawDay = cal.get(Calendar.DAY_OF_MONTH);
+		String day = (rawDay < 10 ? "0" : "") + rawDay;
 		cal.add(Calendar.MONTH, 1);
+		
+		loanReturnPlan.put("dataAcord", String.format("%s-%s-%s", year, month, day));
 		
 		JSONArray rates = new JSONArray();
 		for(int i = 0; i < nrRate; i++) {
 			JSONObject rata = new JSONObject();
 			rata.put("nr", i + 1);
 			
-			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH) + 1;
-			int day = cal.get(Calendar.DAY_OF_MONTH);
-			cal.set(Calendar.MONTH, 1);
+			year = cal.get(Calendar.YEAR) + "";
+			rawMonth = cal.get(Calendar.MONTH) + 1;
+			month = (rawMonth < 10 ? "0" : "") + rawMonth;
+			rawDay = cal.get(Calendar.DAY_OF_MONTH);
+			day = (rawDay < 10 ? "0" : "") + rawDay;
+			cal.add(Calendar.MONTH, 1);
 			
 			rata.put("scadenta", String.format("%s-%s-%s", year, month, day));
 			rata.put("dobanda", monthlyMaxExtraPay - (i * monthlyDifference));

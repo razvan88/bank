@@ -9,6 +9,7 @@ import webservice.resources.ChangeAccountLockStatusResource;
 import webservice.resources.GetAccountLockStatusResource;
 import webservice.resources.GetDomainsResource;
 import webservice.resources.GetExperienceResource;
+import webservice.resources.GetNewLoanResource;
 import webservice.resources.GetStatusResource;
 import webservice.resources.GetUserInfoResource;
 import webservice.resources.GetUserLoanResource;
@@ -38,6 +39,7 @@ public class WebserviceDispatcher extends Application {
 		router.attach("/getDomains", GetDomainsResource.class);
 		router.attach("/getExperience", GetExperienceResource.class);
 		router.attach("/getStatus", GetStatusResource.class);
+		router.attach("/getNewLoan", GetNewLoanResource.class);
 		
 		return router;
 	}
