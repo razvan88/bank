@@ -103,7 +103,7 @@ public class DBOperations {
 			Statement statement = connection
 					.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
 							ResultSet.CONCUR_READ_ONLY);
-			String query = "SELECT `*` FROM " + Credentials.TABEL_EXPERIENTA;
+			String query = "SELECT * FROM " + Credentials.TABEL_EXPERIENTA;
 			ResultSet result = statement.executeQuery(query);
 
 			while (result.next()) {
