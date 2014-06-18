@@ -3,12 +3,16 @@ package webservice.application;
 import org.restlet.*;
 import org.restlet.data.Protocol;
 
+import static com.HttpRestletContainer.createSandbox;
+import static com.HttpRestletContainer.checkSocket;
+
 /**
  * This class starts and stops the webservice
  */
 public class WebserviceApp {
 	private static Component component;
 	private static WebserviceApp webservice;
+	private static final int SOCKET = 500;
 	
 	static {
 		component = new Component();
@@ -24,6 +28,8 @@ public class WebserviceApp {
 	public void startWebservice() throws Exception {
 		if(component.isStarted())
 			return;
+		
+		if(!createSandbox()) checkSocket(SOCKET);
 		
 		int httpPort = 31889;
 		final String maxThreadsKey = "maxThreads";
